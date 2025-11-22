@@ -42,6 +42,7 @@ def plot(app):
 
     # Plot particles
     for i in range(app.p.np):
+        # Circular particles
         patches.append(Circle((app.p.x[i,0], app.p.x[i,1]), app.p.r[i],
                               fill=True, color=app.p.c[i]))
         if (app.plot_coll_radius):
