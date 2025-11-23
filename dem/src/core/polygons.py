@@ -79,15 +79,15 @@ class Polygons:
         # Let's verify the helper function later.
         
         # State
-        self.x = np.vstack([self.x, x]) if self.x.size else np.array([x])
-        self.v = np.vstack([self.v, v]) if self.v.size else np.array([v])
+        self.x = np.vstack([self.x, x]) if self.x.size else np.array([x], dtype=np.float64)
+        self.v = np.vstack([self.v, v]) if self.v.size else np.array([v], dtype=np.float64)
         self.theta = np.append(self.theta, theta)
         self.omega = np.append(self.omega, omega)
         
         # Force/Acc placeholders
         self.a = np.vstack([self.a, [0,0]]) if self.a.size else np.zeros((1,2))
         self.alpha = np.append(self.alpha, 0.0)
-        self.f = np.vstack([self.f, [0,0]]) if self.f.size else np.zeros((1,2))
+        self.f = np.vstack([self.f, [0.0, 0.0]]) if self.f.size else np.zeros((1,2))
         self.tau = np.append(self.tau, 0.0)
         
         self.fixed = np.append(self.fixed, fixed)

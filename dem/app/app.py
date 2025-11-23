@@ -11,6 +11,9 @@ from dem.app.circular     import *
 from dem.app.silo_open    import *
 from dem.app.turek        import *
 from dem.app.polygon_packing import *
+from dem.app.open_channel    import *
+from dem.app.fvm_coupling    import *
+from dem.app.fvm_open_channel import *
 
 # Declare factory
 app_factory = factory()
@@ -27,3 +30,6 @@ app_factory.register("circular",    circular)
 app_factory.register("silo_open",   silo_open)
 app_factory.register("turek",       turek)
 app_factory.register("polygon_packing", polygon_packing)
+app_factory.register("open_channel",    open_channel)
+app_factory.register("fvm_coupling",    fvm_coupling)
+app_factory.register("fvm_open_channel", fvm_open_channel)
