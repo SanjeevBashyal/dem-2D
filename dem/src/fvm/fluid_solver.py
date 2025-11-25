@@ -463,6 +463,12 @@ def solve_k_omega(k, w, nu_t, u, v, nx, ny, dx, dy, dt, nu_mol, beta_star, alpha
     advect_scalar(k, u, v, nx, ny, dx, dy, dt)
     advect_scalar(w, u, v, nx, ny, dx, dy, dt)
     
+    # Enforce positivity after advection
+    for i in range(nx):
+        for j in range(ny):
+            if k[i, j] < 1e-8: k[i, j] = 1e-8
+            if w[i, j] < 1e-8: w[i, j] = 1e-8
+    
     # 2. Production and Dissipation
     k_new = np.zeros_like(k)
     w_new = np.zeros_like(w)
@@ -481,7 +487,8 @@ def solve_k_omega(k, w, nu_t, u, v, nx, ny, dx, dy, dt, nu_mol, beta_star, alpha
             S2 = (du_dy + dv_dx)**2
             
             # Production Pk = nu_t * S^2
-            Pk = nu_t[i, j] * S2
+            # Limiter
+            Pk = min(nu_t[i, j] * S2, 10.0 * beta_star * k[i, j] * w[i, j])
             
             # Dissipation = beta_star * k * w
             
@@ -511,16 +518,6 @@ def solve_k_omega(k, w, nu_t, u, v, nx, ny, dx, dy, dt, nu_mol, beta_star, alpha
             if k_new[i, j] < 1e-8: k_new[i, j] = 1e-8
             if w_new[i, j] < 1e-8: w_new[i, j] = 1e-8
             
-    # Update arrays and compute nu_t
-    for i in range(1, nx-1):
-        for j in range(1, ny-1):
-            k[i, j] = k_new[i, j]
-            w[i, j] = w_new[i, j]
-            nu_t[i, j] = k[i, j] / w[i, j]
-
-### ************************************************
-### Diffuse Velocity (Explicit)
-@nb.njit(cache=True)
 def diffuse_velocity(u, v, nu_t, nu_mol, nx, ny, dx, dy, dt):
     # Explicit diffusion: u += dt * div(nu * grad u)
     # Simplified: u += dt * (nu_eff * d2u/dx2 + nu_eff * d2u/dy2)

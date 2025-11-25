@@ -242,7 +242,7 @@ def compute_drag_lift_numba(u, v, nu_t, eps_s, nx, ny, dx, dy,
             Re = ur_mag * D / nu_eff
             
             # Drag Coefficient (Schiller-Naumann)
-            Cd = 24.0 / Re * (1.0 + 0.15 * Re**0.687)
+            Cd = 24.0 / (Re + 1e-10) * (1.0 + 0.15 * Re**0.687)
             if Re > 1000:
                 Cd = 0.44
                 
