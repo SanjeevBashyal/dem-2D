@@ -90,6 +90,9 @@ class sediment_transport_app(base_app):
         self.flux_plane_x = 1.6 # Moved further downstream
         self.flux_history = []
         self.time_history = []
+        self.max_v_history = []
+        self.max_k_history = []
+        self.max_eps_history = []
         
         # Visualization
         self.fig = plt.figure(figsize=(10, 15), constrained_layout=True)
@@ -277,10 +280,16 @@ class sediment_transport_app(base_app):
             flux = np.sum(self.polygons.x[:, 0] > self.flux_plane_x)
             self.flux_history.append(flux)
             self.time_history.append(self.t)
-            # Print max velocity and turbulence stats for debugging
-            max_v = np.max(np.linalg.norm(self.polygons.v, axis=1))
-            max_k = np.max(self.fluid_solver.k)
-            max_eps = np.max(self.fluid_solver.omega_t)
+            
+            # Calculate stats
+            max_v = np.max(np.linalg.norm(self.polygons.v, axis=1)) if self.polygons.np > 0 else 0.0
+            max_k = np.max(self.fluid_solver.k) if self.fluid_solver.k is not None else 0.0
+            max_eps = np.max(self.fluid_solver.omega_t) if self.fluid_solver.omega_t is not None else 0.0
+            
+            self.max_v_history.append(max_v)
+            self.max_k_history.append(max_k)
+            self.max_eps_history.append(max_eps)
+            
             print(f"t={self.t:.3f}, Flux={flux}, Max V_p={max_v:.3f}, Max k={max_k:.4f}, Max eps={max_eps:.4f}", flush=True)
 
     def plot(self, frame):
@@ -348,7 +357,10 @@ def run_simulation(run_name, slope, u_inlet):
     ani = animation.FuncAnimation(app.fig, update_anim, frames=list(range(50)), interval=200, cache_frame_data=False)
     ani.save(f"sediment_{run_name}_refined.gif", writer='pillow', fps=10)
     
-    np.savetxt(f"flux_{run_name}_refined.csv", np.column_stack((app.time_history, app.flux_history)), delimiter=",")
+    # Save extended data to CSV
+    data = np.column_stack((app.time_history, app.flux_history, app.max_v_history, app.max_k_history, app.max_eps_history))
+    header = "Time,Flux,Max_Particle_Vel,Max_K,Max_Eps"
+    np.savetxt(f"flux_{run_name}_refined.csv", data, delimiter=",", header=header, comments='')
     print(f"Simulation {run_name} Complete.")
 
 if __name__ == "__main__":
