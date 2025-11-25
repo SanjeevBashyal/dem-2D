@@ -179,3 +179,119 @@ class PolygonSolver:
         
         # Update prev_delta
         history['prev_delta'] = delta
+
+    def compute_hydro_forces(self, grid, polygons, rho_fluid, mu_fluid):
+        # Simple Drag and Buoyancy
+        for i in range(polygons.np):
+            if polygons.fixed[i]:
+                continue
+                
+            # 1. Sample Fluid Velocity at Particle Center
+            # (Simple bilinear interpolation)
+            cx = polygons.x[i, 0]
+            cy = polygons.x[i, 1]
+            
+            # Grid indices
+            # u is at (i+0.5, j) -> x = (i+0.5)*dx, y = (j+0.5)*dy
+            # Wait, u is staggered?
+            # grid.u is (nx+1, ny). u[i,j] is at x=i*dx, y=(j+0.5)*dy
+            # grid.v is (nx, ny+1). v[i,j] is at x=(i+0.5)*dx, y=j*dy
+            
+            # Interpolate u
+            i_u = cx / grid.dx
+            j_u = (cy - 0.5 * grid.dy) / grid.dy
+            u_fluid = self.sample_grid(grid.u, i_u, j_u)
+            
+            # Interpolate v
+            i_v = (cx - 0.5 * grid.dx) / grid.dx
+            j_v = cy / grid.dy
+            v_fluid = self.sample_grid(grid.v, i_v, j_v)
+            
+            # Interpolate Pressure/Buoyancy?
+            # Or just use Archimedes: F_b = -rho * g * Volume
+            # In 2D, Volume = Area.
+            # But we need submerged area.
+            # Check VOF (alpha) at center
+            i_c = int(cx / grid.dx)
+            j_c = int(cy / grid.dy)
+            
+            alpha = 0.0
+            if 0 <= i_c < grid.nx and 0 <= j_c < grid.ny:
+                alpha = grid.alpha[i_c, j_c]
+            
+            # If alpha > 0, apply buoyancy and drag
+            if alpha > 0.01:
+                # Area (Mass / Density)
+                # Or recompute from vertices?
+                # polygons.m[i] = area * density
+                area = polygons.m[i] / polygons.mtr.density
+                
+                # Buoyancy (Vertical Up)
+                # F_b = rho_fluid * g * Volume * alpha
+                # g is vector now?
+                # If solver.g is vector, buoyancy opposes it?
+                # Usually F_b = -rho_fluid * g_vector * Volume
+                # But we passed rho_fluid. We need g.
+                # Let's assume standard gravity for buoyancy direction or pass g?
+                # The method signature doesn't have g.
+                # Let's assume vertical y for now or just drag.
+                # Buoyancy is implicitly handled if we use pressure gradient force?
+                # No, IBM usually adds explicit buoyancy if not resolving pressure on surface.
+                # Let's add simple vertical buoyancy: F_b = rho_fluid * 9.81 * area * alpha
+                # polygons.f[i, 1] += rho_fluid * 9.81 * area * alpha
+                
+                # Drag
+                # F_d = 0.5 * Cd * rho * A * |u_rel| * u_rel
+                # Or Stokes: F_d = 3 * pi * mu * D * u_rel
+                # Diameter approx sqrt(area)
+                D = 2.0 * math.sqrt(area / math.pi)
+                
+                u_rel = u_fluid - polygons.v[i, 0]
+                v_rel = v_fluid - polygons.v[i, 1]
+                
+                # Reynolds number
+                vel_mag = math.sqrt(u_rel**2 + v_rel**2)
+                if vel_mag > 1e-8:
+                    Re = rho_fluid * vel_mag * D / mu_fluid
+                    Cd = 24.0 / Re * (1.0 + 0.15 * Re**0.687) # Schiller-Naumann
+                    
+                    drag_force_mag = 0.5 * rho_fluid * D * Cd * vel_mag * alpha # D is projected area in 2D? (Length)
+                    
+                    fx = drag_force_mag * (u_rel / vel_mag)
+                    fy = drag_force_mag * (v_rel / vel_mag)
+                    
+                    polygons.f[i, 0] += fx
+                    polygons.f[i, 1] += fy
+                    
+                    # Buoyancy (Archimedes)
+                    # F_b = rho_fluid * Volume * g_eff
+                    # We need g.
+                    # Let's assume g = 9.81 up.
+                    polygons.f[i, 1] += rho_fluid * 9.81 * area * alpha
+
+    def sample_grid(self, field, i_f, j_f):
+        # Bilinear interpolation
+        i = int(i_f)
+        j = int(j_f)
+        
+        nx, ny = field.shape
+        
+        # Clamp
+        if i < 0: i = 0
+        if i >= nx - 1: i = nx - 2
+        if j < 0: j = 0
+        if j >= ny - 1: j = ny - 2
+        
+        wx = i_f - i
+        wy = j_f - j
+        
+        # Clamp weights
+        wx = max(0.0, min(1.0, wx))
+        wy = max(0.0, min(1.0, wy))
+        
+        val = (1 - wx) * (1 - wy) * field[i, j] + \
+              wx * (1 - wy) * field[i+1, j] + \
+              (1 - wx) * wy * field[i, j+1] + \
+              wx * wy * field[i+1, j+1]
+              
+        return val

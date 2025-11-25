@@ -8,6 +8,7 @@ from matplotlib.patches import Polygon as PolyPatch
 from dem.app.base_app          import *
 from dem.src.core.polygons     import *
 from dem.src.core.polygon_solver import *
+from dem.src.core.polygon_collision import sat_check
 
 ### ************************************************
 ### Polygon packing app
@@ -48,11 +49,29 @@ class polygon_packing(base_app):
         self.add_wall([w/2, 0], [w/2 + t, 0], [w/2 + t, h], [w/2, h])
         
         # Particles
-        # Add random polygons
-        np_particles = 50
-        for i in range(np_particles):
+        self.particles_to_add = 50
+        self.added_particles = 0
+        self.emit_timer = 0.0
+        self.emit_interval = 0.05 # Emit every 0.05 seconds
+        
+        # Initial solve to set up forces (for walls)
+        self.solver.solve(self.polygons, self.dt)
+
+    def get_world_vertices(self, local_verts, pos, theta):
+        c = math.cos(theta)
+        s = math.sin(theta)
+        R = np.array([[c, -s], [s, c]])
+        rotated = np.dot(local_verts, R.T)
+        return rotated + pos
+
+    def emit_particle(self):
+        w = 1.0
+        h = 1.0
+        
+        # Try to find a valid spot
+        for attempt in range(20):
             x = (np.random.rand() - 0.5) * 0.8 * w
-            y = 0.2 + np.random.rand() * 0.8 * h
+            y = 0.8 + np.random.rand() * 0.2 * h # Emit from top area
             
             # Random shape: Triangle, Square, Pentagon
             n_sides = np.random.randint(3, 6)
@@ -65,19 +84,30 @@ class polygon_packing(base_app):
                 vy = radius * math.sin(angle)
                 verts.append([vx, vy])
             
+            verts = np.array(verts)
+            
             # Random rotation
             theta = np.random.rand() * 2 * math.pi
             omega = 0.0
-            v = [0.0, 0.0]
+            v = [0.0, -1.0] # Initial downward velocity
             
-            self.polygons.add(verts, [x, y], v, theta, omega, color='b')
-
-        # Mark walls as fixed (first 3)
-        # self.fixed_indices = [0, 1, 2]
-        # Handled by fixed=True in add_wall
-
-        # Initial solve to set up forces
-        self.solver.solve(self.polygons, self.dt)
+            # Check overlap
+            cand_verts = self.get_world_vertices(verts, [x, y], theta)
+            overlap = False
+            
+            for i in range(self.polygons.np):
+                existing_verts = self.polygons.vertices_world[i]
+                colliding, _, _ = sat_check(cand_verts, existing_verts)
+                if colliding:
+                    overlap = True
+                    break
+            
+            if not overlap:
+                self.polygons.add(verts, [x, y], v, theta, omega, color='b')
+                self.added_particles += 1
+                return True
+                
+        return False
 
     def add_wall(self, p1, p2, p3, p4):
         verts = [p1, p2, p3, p4]
@@ -107,6 +137,12 @@ class polygon_packing(base_app):
     ### ************************************************
     ### Update positions (Second half of Verlet)
     def update(self):
+        # Emission
+        self.emit_timer += self.dt
+        if self.emit_timer >= self.emit_interval and self.added_particles < self.particles_to_add:
+            if self.emit_particle():
+                self.emit_timer = 0.0
+        
         # 5. Integrate Velocity
         self.polygons.integrate_vel(self.dt)
         

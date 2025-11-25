@@ -272,6 +272,9 @@ class fvm_open_channel(base_app):
         titles = ["VOF (Water Fraction)", "Pressure (Pa)", "Velocity Magnitude (m/s)"]
         data_list = [self.grid.alpha, self.grid.p, speed]
         cmaps = ['Blues', 'viridis', 'plasma']
+        # Fixed ranges
+        vmins = [0.0, -500.0, 0.0]
+        vmaxs = [1.0, 3000.0, 4.0]
         
         # Rotation for visualization
         theta = -math.radians(self.slope_deg)
@@ -306,7 +309,8 @@ class fvm_open_channel(base_app):
             # Plot Data
             # pcolormesh shading='flat' needs X,Y one larger than C
             # X_rot is (ny+1, nx+1), data is (nx, ny). Transpose data to (ny, nx)
-            im = ax.pcolormesh(X_rot, Y_rot, data_list[i].T, cmap=cmaps[i], shading='flat')
+            im = ax.pcolormesh(X_rot, Y_rot, data_list[i].T, cmap=cmaps[i], shading='flat', 
+                               vmin=vmins[i], vmax=vmaxs[i])
             plt.colorbar(im, ax=ax)
             
             # Plot Polygons (Rotated)

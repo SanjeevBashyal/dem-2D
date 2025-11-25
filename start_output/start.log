@@ -1,0 +1,165 @@
+INFO|2025-11-23 10:20:26,042|pysph.solver.application|Started as:
+start.py open_channel_sph
+INFO|2025-11-23 10:20:26,042|pysph.solver.application|Running on SANJEEV with address 192.168.141.44
+INFO|2025-11-23 10:20:26,044|pysph.solver.application|Using OpenMP schedule dynamic,64
+INFO|2025-11-23 10:20:26,057|pysph.solver.application|Generating output in E:\0_Python\dem-2D\start_output
+INFO|2025-11-23 10:21:25,807|pysph.solver.application|Started as:
+start.py open_channel_sph
+INFO|2025-11-23 10:21:25,807|pysph.solver.application|Running on SANJEEV with address 192.168.141.44
+INFO|2025-11-23 10:21:25,807|pysph.solver.application|Using OpenMP schedule dynamic,64
+INFO|2025-11-23 10:21:25,825|pysph.solver.application|Generating output in E:\0_Python\dem-2D\start_output
+INFO|2025-11-23 10:21:25,957|compyle.ext_module|Compiling code at: C:\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.pyx
+DEBUG|2025-11-23 10:21:26,106|root|No `name` configuration, performing automatic discovery
+INFO|2025-11-23 10:21:26,106|root|running build_ext
+INFO|2025-11-23 10:21:29,245|root|building 'm_44c3bb5f2379305e02aa78541a6c54ce' extension
+INFO|2025-11-23 10:21:31,996|root|creating C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64
+INFO|2025-11-23 10:21:31,998|root|"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\bin\HostX86\x64\cl.exe" /c /nologo /O2 /W3 /GL /DNDEBUG /MD -IC:\Users\Ripple\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\include -IC:\Users\Ripple\AppData\Local\Programs\Python\Python312\Lib\site-packages\pysph\base -IC:\Users\Ripple\AppData\Local\Programs\Python\Python312\include -IC:\Users\Ripple\AppData\Local\Programs\Python\Python312\Include "-IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include" "-IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\ATLMFC\include" "-IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\cppwinrt" /EHsc /TpC:\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.cpp /FoC:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.obj -O3
+INFO|2025-11-23 10:21:33,093|root|creating C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\lib.win-amd64-cpython-312
+DEBUG|2025-11-23 10:21:33,093|root|Executing "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\bin\HostX86\x64\link.exe" /nologo /INCREMENTAL:NO /LTCG /DLL /MANIFEST:EMBED,ID=2 /MANIFESTUAC:NO /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312\libs /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312 /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312\PCbuild\amd64 /LIBPATH:C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\ATLMFC\lib\x64 /LIBPATH:C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\lib\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\\lib\10.0.22621.0\\um\x64 /EXPORT:PyInit_m_44c3bb5f2379305e02aa78541a6c54ce C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.obj /OUT:C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\lib.win-amd64-cpython-312\m_44c3bb5f2379305e02aa78541a6c54ce.cp312-win_amd64.pyd /IMPLIB:C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.cp312-win_amd64.lib
+INFO|2025-11-23 10:21:33,094|root|"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\bin\HostX86\x64\link.exe" /nologo /INCREMENTAL:NO /LTCG /DLL /MANIFEST:EMBED,ID=2 /MANIFESTUAC:NO /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312\libs /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312 /LIBPATH:C:\Users\Ripple\AppData\Local\Programs\Python\Python312\PCbuild\amd64 "/LIBPATH:C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\ATLMFC\lib\x64" "/LIBPATH:C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\lib\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\\lib\10.0.22621.0\\um\x64" /EXPORT:PyInit_m_44c3bb5f2379305e02aa78541a6c54ce C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.obj /OUT:C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\lib.win-amd64-cpython-312\m_44c3bb5f2379305e02aa78541a6c54ce.cp312-win_amd64.pyd /IMPLIB:C:\Users\Ripple\.pysph\source\py3.12-win-amd64\build\temp.win-amd64-cpython-312\Release\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.cp312-win_amd64.lib
+INFO|2025-11-23 10:21:34,714|pysph.solver.application|----------------------------------------------------------------------
+No of particles:
+  fluid: 250
+  wall: 550
+  dem_boundary: 45
+  Total: 845
+----------------------------------------------------------------------
+INFO|2025-11-23 10:21:34,715|pysph.solver.application|Using kernel:
+----------------------------------------------------------------------
+  QuinticSpline(dim=2)
+----------------------------------------------------------------------
+INFO|2025-11-23 10:21:34,715|pysph.solver.application|Using nnps:
+----------------------------------------------------------------------
+  LinkedListNNPS(dim=2)
+----------------------------------------------------------------------
+INFO|2025-11-23 10:21:34,715|pysph.solver.application|Using integrator:
+----------------------------------------------------------------------
+  PECIntegrator(fluid=EDACStep())
+----------------------------------------------------------------------
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Using equations:
+----------------------------------------------------------------------
+[
+Group(equations=[
+    SummationDensity(dest='fluid', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SourceNumberDensity(dest='wall', sources=['fluid']), 
+    VolumeSummation(dest='wall', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SolidWallPressureBC(dest='wall', sources=['fluid'],
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0), 
+    SetWallVelocity(dest='wall', sources=['fluid']), 
+    SourceNumberDensity(dest='dem_boundary', sources=['fluid']), 
+    VolumeSummation(dest='dem_boundary', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SolidWallPressureBC(dest='dem_boundary', sources=['fluid'],
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0), 
+    SetWallVelocity(dest='dem_boundary', sources=['fluid'])
+  ],
+  real=False, update_nnps=False, iterate=False, max_iterations=1,
+  min_iterations=0, start_idx=0, name='Group_0'),
+Group(equations=[
+    MomentumEquation(dest='fluid', sources=['fluid', 'wall',
+    'dem_boundary'], c0=np.float64(19.809088823063014),
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0, tdamp=0.0), 
+    MomentumEquationViscosity(dest='fluid', sources=['fluid'], nu=1e-06), 
+    SolidWallNoSlipBC(dest='fluid', sources=['wall', 'dem_boundary'],
+    nu=1e-06), 
+    EDACEquation(dest='fluid', sources=['fluid', 'wall', 'dem_boundary'],
+    cs=np.float64(19.809088823063014), nu=np.float64(0.02971363323459452),
+    rho0=1000.0), 
+    XSPHCorrection(dest='fluid', sources=['fluid'], eps=0.0)
+  ],
+  real=True, update_nnps=False, iterate=False, max_iterations=1,
+  min_iterations=0, start_idx=0, name='Group_1')
+]
+----------------------------------------------------------------------
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Callbacks:
+----------------------------------------------------------------------
+
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Pre-step callbacks:
+[]
+
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Post-step callbacks:
+[]
+
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Post-stage callbacks:
+[]
+----------------------------------------------------------------------
+
+INFO|2025-11-23 10:21:34,716|pysph.solver.application|Setup took: 8.92267 secs
+INFO|2025-11-23 10:25:22,278|pysph.solver.application|Started as:
+start.py open_channel_sph
+INFO|2025-11-23 10:25:22,279|pysph.solver.application|Running on SANJEEV with address 192.168.141.44
+INFO|2025-11-23 10:25:22,279|pysph.solver.application|Using OpenMP schedule dynamic,64
+INFO|2025-11-23 10:25:22,285|pysph.solver.application|Generating output in E:\0_Python\dem-2D\start_output
+INFO|2025-11-23 10:25:22,398|compyle.ext_module|Precompiled code from: C:\Users\Ripple\.pysph\source\py3.12-win-amd64\m_44c3bb5f2379305e02aa78541a6c54ce.pyx
+INFO|2025-11-23 10:25:22,403|pysph.solver.application|----------------------------------------------------------------------
+No of particles:
+  fluid: 250
+  wall: 550
+  dem_boundary: 45
+  Total: 845
+----------------------------------------------------------------------
+INFO|2025-11-23 10:25:22,403|pysph.solver.application|Using kernel:
+----------------------------------------------------------------------
+  QuinticSpline(dim=2)
+----------------------------------------------------------------------
+INFO|2025-11-23 10:25:22,403|pysph.solver.application|Using nnps:
+----------------------------------------------------------------------
+  LinkedListNNPS(dim=2)
+----------------------------------------------------------------------
+INFO|2025-11-23 10:25:22,403|pysph.solver.application|Using integrator:
+----------------------------------------------------------------------
+  PECIntegrator(fluid=EDACStep())
+----------------------------------------------------------------------
+INFO|2025-11-23 10:25:22,404|pysph.solver.application|Using equations:
+----------------------------------------------------------------------
+[
+Group(equations=[
+    SummationDensity(dest='fluid', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SourceNumberDensity(dest='wall', sources=['fluid']), 
+    VolumeSummation(dest='wall', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SolidWallPressureBC(dest='wall', sources=['fluid'],
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0), 
+    SetWallVelocity(dest='wall', sources=['fluid']), 
+    SourceNumberDensity(dest='dem_boundary', sources=['fluid']), 
+    VolumeSummation(dest='dem_boundary', sources=['fluid', 'wall',
+    'dem_boundary']), 
+    SolidWallPressureBC(dest='dem_boundary', sources=['fluid'],
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0), 
+    SetWallVelocity(dest='dem_boundary', sources=['fluid'])
+  ],
+  real=False, update_nnps=False, iterate=False, max_iterations=1,
+  min_iterations=0, start_idx=0, name='Group_0'),
+Group(equations=[
+    MomentumEquation(dest='fluid', sources=['fluid', 'wall',
+    'dem_boundary'], c0=np.float64(19.809088823063014),
+    gx=1.7034886229125867, gy=-9.66096405704976, gz=0.0, tdamp=0.0), 
+    MomentumEquationViscosity(dest='fluid', sources=['fluid'], nu=1e-06), 
+    SolidWallNoSlipBC(dest='fluid', sources=['wall', 'dem_boundary'],
+    nu=1e-06), 
+    EDACEquation(dest='fluid', sources=['fluid', 'wall', 'dem_boundary'],
+    cs=np.float64(19.809088823063014), nu=np.float64(0.02971363323459452),
+    rho0=1000.0), 
+    XSPHCorrection(dest='fluid', sources=['fluid'], eps=0.0)
+  ],
+  real=True, update_nnps=False, iterate=False, max_iterations=1,
+  min_iterations=0, start_idx=0, name='Group_1')
+]
+----------------------------------------------------------------------
+INFO|2025-11-23 10:25:22,405|pysph.solver.application|Callbacks:
+----------------------------------------------------------------------
+
+INFO|2025-11-23 10:25:22,405|pysph.solver.application|Pre-step callbacks:
+[]
+
+INFO|2025-11-23 10:25:22,405|pysph.solver.application|Post-step callbacks:
+[]
+
+INFO|2025-11-23 10:25:22,405|pysph.solver.application|Post-stage callbacks:
+[]
+----------------------------------------------------------------------
+
+INFO|2025-11-23 10:25:22,405|pysph.solver.application|Setup took: 0.13846 secs

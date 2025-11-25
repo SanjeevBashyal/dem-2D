@@ -6,6 +6,14 @@ from dem.app.dam_break    import *
 from dem.app.carreau      import *
 from dem.app.obstacle     import *
 from dem.app.silo         import *
+# Custom imports
+from dem.src.core.factory import *
+from dem.app.gravity      import *
+from dem.app.restitution  import *
+from dem.app.dam_break    import *
+from dem.app.carreau      import *
+from dem.app.obstacle     import *
+from dem.app.silo         import *
 from dem.app.mill         import *
 from dem.app.circular     import *
 from dem.app.silo_open    import *
@@ -14,6 +22,7 @@ from dem.app.polygon_packing import *
 from dem.app.open_channel    import *
 from dem.app.fvm_coupling    import *
 from dem.app.fvm_open_channel import *
+from dem.app.open_channel_sph import OpenChannelSPH
 
 # Declare factory
 app_factory = factory()
@@ -33,3 +42,4 @@ app_factory.register("polygon_packing", polygon_packing)
 app_factory.register("open_channel",    open_channel)
 app_factory.register("fvm_coupling",    fvm_coupling)
 app_factory.register("fvm_open_channel", fvm_open_channel)
+app_factory.register("open_channel_sph", OpenChannelSPH)
