@@ -94,6 +94,10 @@ class sediment_transport_app(base_app):
         self.max_k_history = []
         self.max_eps_history = []
         
+        # Profile Monitor
+        self.profile_start_time = 0.5
+        self.profile_monitor = ProfileMonitor(self.nx, self.ny, self.dy)
+        
         # Visualization
         self.fig = plt.figure(figsize=(10, 15), constrained_layout=True)
         self.gs = GridSpec(5, 2, width_ratios=[20, 1], figure=self.fig)
@@ -291,6 +295,10 @@ class sediment_transport_app(base_app):
             self.max_eps_history.append(max_eps)
             
             print(f"t={self.t:.3f}, Flux={flux}, Max V_p={max_v:.3f}, Max k={max_k:.4f}, Max eps={max_eps:.4f}", flush=True)
+            
+            # Update Profile Monitor (Only in developed phase)
+            if self.t > self.profile_start_time:
+                self.profile_monitor.update(self.grid.u, self.fluid_solver.k, self.fluid_solver.omega_t, self.grid.nu_t, self.grid.alpha)
 
     def plot(self, frame):
         # Helper to plot particles
@@ -361,6 +369,10 @@ def run_simulation(run_name, slope, u_inlet):
     data = np.column_stack((app.time_history, app.flux_history, app.max_v_history, app.max_k_history, app.max_eps_history))
     header = "Time,Flux,Max_Particle_Vel,Max_K,Max_Eps"
     np.savetxt(f"flux_{run_name}_refined.csv", data, delimiter=",", header=header, comments='')
+    
+    # Save Profiles
+    app.profile_monitor.save(f"profiles_{run_name}.csv")
+    
     print(f"Simulation {run_name} Complete.")
 
 if __name__ == "__main__":
@@ -371,3 +383,52 @@ if __name__ == "__main__":
     # Run Super-Critical
     print("Running Super-Critical Refined...")
     run_simulation("super_critical", 0.02, 1.5)
+
+class ProfileMonitor:
+    def __init__(self, nx, ny, dy):
+        self.nx = nx
+        self.ny = ny
+        self.dy = dy
+        self.count = 0
+        
+        # Accumulators (Vertical profiles, averaged over x)
+        self.sum_u = np.zeros(ny)
+        self.sum_k = np.zeros(ny)
+        self.sum_eps = np.zeros(ny)
+        self.sum_nu_t = np.zeros(ny)
+        self.sum_alpha = np.zeros(ny)
+        
+    def update(self, u, k, eps, nu_t, alpha):
+        # Compute spatial average over x for this timestep
+        # u is (nx+1, ny) -> center to (nx, ny)
+        u_c = 0.5 * (u[:-1, :] + u[1:, :])
+        
+        # Average over x-direction (axis 0)
+        self.sum_u += np.mean(u_c, axis=0)
+        
+        if k is not None:
+            self.sum_k += np.mean(k, axis=0)
+        
+        if eps is not None:
+            self.sum_eps += np.mean(eps, axis=0)
+            
+        self.sum_nu_t += np.mean(nu_t, axis=0)
+        self.sum_alpha += np.mean(alpha, axis=0)
+        
+        self.count += 1
+        
+    def save(self, filename):
+        if self.count == 0: return
+        
+        y_coords = (np.arange(self.ny) + 0.5) * self.dy
+        
+        mean_u = self.sum_u / self.count
+        mean_k = self.sum_k / self.count
+        mean_eps = self.sum_eps / self.count
+        mean_nu_t = self.sum_nu_t / self.count
+        mean_alpha = self.sum_alpha / self.count
+        
+        data = np.column_stack((y_coords, mean_u, mean_k, mean_eps, mean_nu_t, mean_alpha))
+        header = "y,mean_u,mean_k,mean_eps,mean_nu_t,mean_alpha"
+        np.savetxt(filename, data, delimiter=",", header=header, comments='')
+        print(f"Saved profile data to {filename}")

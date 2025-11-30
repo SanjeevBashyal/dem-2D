@@ -211,9 +211,16 @@ class sediment_transport_k_omega_standard_app(base_app):
             
             # Wall BC for Omega (Bottom Wall j=0)
             # Standard K-Omega requires very large omega at wall.
-            # On coarse grids, the analytical formula might be too small.
-            # Set to a large value to enforce k->0 near wall.
-            omega_wall = 1000.0
+            # However, for coarse grids (y+ > 30), we should use the log-law value:
+            # omega = u_tau / (sqrt(beta_star) * kappa * y_1)
+            # Estimate u_tau approx 0.05 * u_inlet
+            u_tau_est = 0.06 * self.u_inlet
+            kappa = 0.41
+            beta_star = 0.09
+            y_1 = 0.5 * self.dy
+            
+            omega_wall = u_tau_est / (np.sqrt(beta_star) * kappa * y_1)
+            # This should be around 80-100 for u=1.0, dy=0.01
             
             self.fluid_solver.omega_t[:, 0] = omega_wall
             # Top wall (if treated as wall) or free surface?
